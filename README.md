@@ -119,4 +119,3 @@ Aspiring Junior Cloud Engineer
 
 ---
 
-> This project is intentionally designed to reflect real production patterns rather than simple tutorials.
