@@ -8,3 +8,32 @@ module "vpc" {
   azs             = ["eu-west-1a", "eu-west-1b"]
 }
 
+
+module "alb" {
+  source = "../../modules/alb"
+
+  environment       = "dev"
+  vpc_id            = module.vpc.vpc_id
+  public_subnet_ids = module.vpc.public_subnet_ids
+}
+
+
+module "ec2" {
+  source = "../../modules/ec2"
+
+  environment           = "dev"
+  vpc_id                = module.vpc.vpc_id
+  private_subnet_ids    = module.vpc.private_subnet_ids
+  alb_security_group_id = module.alb.alb_security_group_id
+  target_group_arn      = module.alb.target_group_arn
+}
+
+
+module "rds" {
+  source = "../../modules/rds"
+
+  environment             = "dev"
+  vpc_id                  = module.vpc.vpc_id
+  private_subnet_ids      = module.vpc.private_subnet_ids
+  ec2_security_group_id   = module.ec2.ec2_security_group_id
+}
