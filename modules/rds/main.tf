@@ -43,12 +43,12 @@ resource "aws_db_instance" "this" {
   instance_class          = "db.t3.micro"
   allocated_storage       = 20
   db_name                 = "appdb"
-  username                = "jsondecode(
+  username                = jsondecode(
     aws_secretsmanager_secret_version.db.secret_string
-  )["username"]"
-  password                = "jsondecode(
+  )["username"]
+  password                = jsondecode(
     aws_secretsmanager_secret_version.db.secret_string
-  )["password"]"
+  )["password"]
   skip_final_snapshot     = true
   publicly_accessible     = false
   multi_az                = false
@@ -66,34 +66,14 @@ resource "aws_secretsmanager_secret_version" "db" {
   secret_id = aws_secretsmanager_secret.db.id
 
   secret_string = jsonencode({
-    username = "jsondecode(
+    username = jsondecode(
     aws_secretsmanager_secret_version.db.secret_string
-  )["username"]"
-    password = "jsondecode(
+  )["username"]
+    password = jsondecode(
     aws_secretsmanager_secret_version.db.secret_string
-  )["password"]"
+  )["password"]
   })
 }
 
 
 
-resource "aws_db_instance" "this" {
-  identifier           = "${var.environment}-db"
-  engine               = "mysql"
-  instance_class       = "db.t3.micro"
-  allocated_storage    = 20
-  db_name              = "appdb"
-
-  username = jsondecode(
-    aws_secretsmanager_secret_version.db.secret_string
-  )["username"]
-
-  password = jsondecode(
-    aws_secretsmanager_secret_version.db.secret_string
-  )["password"]
-
-  publicly_accessible  = false
-  skip_final_snapshot  = true
-  vpc_security_group_ids = [aws_security_group.rds.id]
-  db_subnet_group_name   = aws_db_subnet_group.this.name
-}
