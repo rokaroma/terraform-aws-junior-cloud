@@ -32,6 +32,9 @@ resource "aws_db_subnet_group" "this" {
   }
 }
 
+resource "aws_secretsmanager_secret" "db" {
+  name = "${var.environment}/rds/credentials"
+}
 
 resource "aws_db_instance" "this" {
   identifier              = "${var.environment}-db"
@@ -40,8 +43,12 @@ resource "aws_db_instance" "this" {
   instance_class          = "db.t3.micro"
   allocated_storage       = 20
   db_name                 = "appdb"
-  username                = "admin"
-  password                = "ChangeMe123!"
+  username                = "jsondecode(
+    aws_secretsmanager_secret_version.db.secret_string
+  )["username"]"
+  password                = "jsondecode(
+    aws_secretsmanager_secret_version.db.secret_string
+  )["password"]"
   skip_final_snapshot     = true
   publicly_accessible     = false
   multi_az                = false
@@ -54,18 +61,20 @@ resource "aws_db_instance" "this" {
 }
 
 
-resource "aws_secretsmanager_secret" "db" {
-  name = "${var.environment}/rds/credentials"
-}
 
 resource "aws_secretsmanager_secret_version" "db" {
   secret_id = aws_secretsmanager_secret.db.id
 
   secret_string = jsonencode({
-    username = "admin"
-    password = "ChangeMe123!"
+    username = "jsondecode(
+    aws_secretsmanager_secret_version.db.secret_string
+  )["username"]"
+    password = "jsondecode(
+    aws_secretsmanager_secret_version.db.secret_string
+  )["password"]"
   })
 }
+
 
 
 resource "aws_db_instance" "this" {
