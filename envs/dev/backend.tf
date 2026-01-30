@@ -1,14 +1,9 @@
 terraform {
-  backend "local" {}
-}
-
-terraform {
   backend "s3" {
-    bucket         = "romasaso-terraform-state-bucket"
-    key            = "dev/terraform.tfstate"
-    region         = "eu-west-1"
-    dynamodb_table = "terraform-locks"
-    encrypt        = true
-    dynamodb_table = "terraform-locks"
+    bucket       = "romasaso-terraform-state-bucket"
+    key          = "dev/terraform.tfstate"
+    region       = "eu-west-1"
+    encrypt      = true
+    use_lockfile = true
   }
 }
