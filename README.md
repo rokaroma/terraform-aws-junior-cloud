@@ -112,6 +112,14 @@ After deployment:
 
 ---
 
+## CI/CD & Application Deployment
+
+- Application deployments are automated using GitHub Actions
+- Infrastructure remains managed by Terraform
+- Deployments occur without SSH access using AWS Systems Manager
+- Application health is observed using CloudWatch
+
+
 ## Author
 
 **Romany Ibrahim**
