@@ -1,5 +1,10 @@
 # Terraform AWS Junior Cloud Engineer Project
 
+## Overview
+
+This project demonstrates a **production-ready AWS infrastructure** built using **Terraform**, designed to reflect what a **Junior Cloud Engineer** would manage in a real company environment.
+
+The goal of this project is to show **safe infrastructure design**, **security best practices**, and **Infrastructure as Code (IaC)** skills rather than simple service demos.
 
 ---
 
@@ -106,24 +111,53 @@ After deployment:
 
 ## What This Project Demonstrates
 
-* Real-world AWS infrastructure design
-* Infrastructure as Code best practices
-* Security-first cloud architecture
+* Real-world AWS infrastructure design using Terraform
+* Secure, production-style networking and IAM practices
+* Separation of infrastructure provisioning and application deployment
+* End-to-end DevOps workflow from code commit to running application
+* Junior Cloud Engineer readiness with DevOps fundamentals
 
 ---
 
-## CI/CD & Application Deployment
+## CI/CD & DevOps Workflow
 
-- Application deployments are automated using GitHub Actions
-- Infrastructure remains managed by Terraform
-- Deployments occur without SSH access using AWS Systems Manager
-- Application health is observed using CloudWatch
+This project also includes a complete **Cloud + DevOps pipeline** to demonstrate how infrastructure is used in practice.
 
+### Application
+
+* Simple Python Flask application displaying hostname and environment
+* Used to demonstrate load balancing and scaling behavior
+
+### Containerization
+
+* Application containerized using Docker
+* Optimized Dockerfile using slim base image
+* Image stored securely in Amazon ECR
+
+### CI/CD (GitHub Actions)
+
+* Automated pipeline triggered on every push to `main`
+* Builds Docker image
+* Pushes image to Amazon ECR securely using GitHub Secrets
+
+### Deployment (Ansible)
+
+* Ansible used for basic configuration management and deployment
+* Installs Docker on EC2 instances
+* Pulls application image from ECR using IAM role authentication
+* Runs and updates the application container
+
+### Monitoring
+
+* Basic monitoring using AWS CloudWatch
+* EC2 and ALB metrics
+* Application logs available via CloudWatch
+
+
+---
 
 ## Author
-
-**Romany Ibrahim**
+Romany Ibrahim
 Aspiring Junior Cloud Engineer
 
----
 
